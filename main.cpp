@@ -1,5 +1,9 @@
 #include <map>
 
+#define FIND_SUCCESS 100
+#define FIND_FAIL -100
+#define FIND_PREFIX_FAIL -200
+
 struct Vertex
 {
     std::map<char, struct Vertex*> next;
@@ -25,7 +29,7 @@ public:
     ~Trie();
 
     void insert(char* cstr);
-    void find();
+    int find(char* cstr);
 };
 
 //
@@ -73,10 +77,36 @@ void Trie::insert(char* cstr)
     current->is_terminal = true;
 }
 
+int Trie::find(char* cstr)
+{
+    struct Vertex* current = this->root;
+    char* ptr = cstr;
+    while (*ptr)
+    {
+        if (auto search = current->next.find(*ptr); search != current->next.end())
+        {
+            ptr++;
+            current = search->second;
+            continue;
+        }
+
+        return FIND_FAIL;
+    }
+
+    if(current->is_terminal) 
+        return FIND_SUCCESS;
+   
+    else 
+        return FIND_PREFIX_FAIL;
+}
+
 int main()
 {
     Trie t;
     t.insert("abc");
     t.insert("ac");
+
+    int result = t.find("ac");
+    int result2 = t.find("ab");
     return 0;
 }
