@@ -9,6 +9,7 @@ struct Vertex
     std::map<char, struct Vertex*> next;
     bool is_terminal;
     struct Vertex* parent;
+    char prev_char;
 
     // for auto
     // struct Vertex* sufflink;
