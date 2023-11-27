@@ -1,4 +1,6 @@
 #include <map>
+#include <string.h>
+#include <iostream>
 
 #define FIND_SUCCESS 100
 #define FIND_FAIL -100
@@ -11,9 +13,8 @@ struct Vertex
     struct Vertex* parent;
     char prev_char;
 
-    // for auto
-    // struct Vertex* sufflink;
-    // struct Vertex** go;
+    struct Vertex* sufflink;
+    std::map<char, struct Vertex*> go;
 
 };
 
@@ -31,6 +32,11 @@ public:
 
     void insert(char* cstr);
     int find(char* cstr);
+
+    struct Vertex* get_root() const;
+
+    struct Vertex* get_link(struct Vertex* vertex);
+    struct Vertex* go(struct Vertex* vertex, char c);
 };
 
 //
@@ -46,7 +52,7 @@ Vertex *Trie::initVertex(struct Vertex* parent)
     result->prev_char = '\0';
 
     result->sufflink = nullptr;
-    // result->go = 
+    result->go = std::map<char, struct Vertex*>();
 
     return result;
 }
@@ -106,13 +112,71 @@ int Trie::find(char* cstr)
         return FIND_PREFIX_FAIL;
 }
 
+Vertex* Trie::get_root() const
+{
+    return this->root;
+}
+
+Vertex *Trie::get_link(struct Vertex* vertex)
+{
+    if (vertex->sufflink == nullptr)
+    {
+        if(vertex == this->root || vertex->parent == this->root)
+        {
+            vertex->sufflink = this->root;
+        }
+
+        else
+        {
+            vertex->sufflink = this->go(this->get_link(vertex->parent), vertex->prev_char);
+        }
+    }
+
+    return vertex->sufflink;
+}
+
+Vertex *Trie::go(Vertex *vertex, char c)
+{
+    if (auto search = vertex->go.find(c); search == vertex->go.end())
+    {
+        if (auto search_next = vertex->next.find(c); search_next != vertex->next.end())
+        {
+            vertex->go[c] = vertex->next[c];
+        }
+
+        else if (vertex == this->root)
+        {
+            vertex->go[c] = this->root;
+        }
+
+        else
+        {
+            vertex->go[c] = this->go(this->get_link(vertex), c);
+        }
+    }
+    
+    return vertex->go[c];
+}
+
 int main()
 {
     Trie t;
-    t.insert("abc");
-    t.insert("ac");
+    t.insert("amazing");
 
     int result = t.find("ac");
     int result2 = t.find("ab");
+
+    char txt[] = "hello amazing world ac";
+    struct Vertex* v = t.get_root();
+
+    for (int i = 0; i < strlen(txt); i++)
+    {
+        v = t.go(v, txt[i]);
+        if (v->is_terminal)
+        {
+            std::cout << "Found on index: " << i << std::endl;
+        }
+    }
+
     return 0;
 }
