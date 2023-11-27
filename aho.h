@@ -36,3 +36,5 @@ public:
     struct Vertex* get_link(struct Vertex* vertex);
     struct Vertex* go(struct Vertex* vertex, char c);
 };
+
+int quick_search_aho(char* cstr, char* sub_cstr);

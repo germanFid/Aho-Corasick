@@ -1,4 +1,5 @@
 #include "aho.h"
+#include <string.h>
 
 //
 // Check https://www.cs.usfca.edu/~galles/visualization/Trie.html
@@ -117,4 +118,24 @@ Vertex *Trie::go(Vertex *vertex, char c)
     }
     
     return vertex->go[c];
+}
+
+int quick_search_aho(char *cstr, char *sub_cstr)
+{
+    Trie t;
+    int sub_cstr_len = strlen(sub_cstr);
+
+    t.insert(sub_cstr);
+    struct Vertex* v = t.get_root();
+
+    for (int i = 0; i < strlen(cstr); i++)
+    {
+        v = t.go(v, cstr[i]);
+        if (v->is_terminal)
+        {
+            return i - sub_cstr_len + 1;
+        }
+    }
+    
+    return FIND_FAIL;
 }
