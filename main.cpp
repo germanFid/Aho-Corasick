@@ -42,6 +42,10 @@ Vertex *Trie::initVertex(struct Vertex* parent)
     result->next = std::map<char, struct Vertex*>();
     result->is_terminal = false;
     result->parent = parent;
+    result->prev_char = '\0';
+
+    result->sufflink = nullptr;
+    // result->go = 
 
     return result;
 }
@@ -70,6 +74,7 @@ void Trie::insert(char* cstr)
         }
 
         current->next[*ptr] = initVertex(current);
+        current->next[*ptr]->prev_char = *ptr;
         current = current->next[*ptr];
         ptr++;
     }
