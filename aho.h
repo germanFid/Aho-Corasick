@@ -37,4 +37,8 @@ public:
     struct Vertex* go(struct Vertex* vertex, char c);
 };
 
+/// @brief quick search with Aho-Corasick algorithm
+/// @param cstr string to search in
+/// @param sub_cstr string to search
+/// @return first index of first substring in cstr or `FIND_FAIL`
 int quick_search_aho(char* cstr, char* sub_cstr);
