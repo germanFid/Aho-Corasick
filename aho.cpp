@@ -120,12 +120,12 @@ Vertex *Trie::go(Vertex *vertex, char c)
     return vertex->go[c];
 }
 
-int quick_search_aho(char *cstr, char *sub_cstr)
+int quick_search_aho(const char *cstr, const char *sub_cstr)
 {
     Trie t;
     int sub_cstr_len = strlen(sub_cstr);
 
-    t.insert(sub_cstr);
+    t.insert((char*)sub_cstr);
     struct Vertex* v = t.get_root();
 
     for (int i = 0; i < strlen(cstr); i++)

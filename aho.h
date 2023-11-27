@@ -41,4 +41,4 @@ public:
 /// @param cstr string to search in
 /// @param sub_cstr string to search
 /// @return first index of first substring in cstr or `FIND_FAIL`
-int quick_search_aho(char* cstr, char* sub_cstr);
+int quick_search_aho(const char* cstr, const char* sub_cstr);
