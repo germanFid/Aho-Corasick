@@ -1,4 +1,5 @@
 #include <map>
+#include <vector>
 
 #define FIND_SUCCESS 100
 #define FIND_FAIL -100
@@ -35,6 +36,11 @@ public:
 
     struct Vertex* get_link(struct Vertex* vertex);
     struct Vertex* go(struct Vertex* vertex, char c);
+
+    /// @brief Assembles cstr from terminal vertex
+    /// @param v terminal vertex
+    /// @return cstr. You MUST free/delete it after use. `nulltr` on error
+    char* terminal_assemble(struct Vertex* v);
 };
 
 /// @brief quick search with Aho-Corasick algorithm

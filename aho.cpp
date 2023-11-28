@@ -120,6 +120,33 @@ Vertex *Trie::go(Vertex *vertex, char c)
     return vertex->go[c];
 }
 
+char *Trie::terminal_assemble(Vertex *v)
+{
+    struct Vertex* root = this->get_root();
+    struct Vertex* current = v;
+    
+    std::vector<char> vec;
+
+    while (current != root)
+    {
+        vec.push_back(current->prev_char);
+        current = current->parent;
+    }
+
+    int n = vec.size();
+    char* result = new char[vec.size() + 1];
+    result[vec.size()] = '\0';
+
+    int i = 0;
+    for (int j = vec.size() - 1; j >= 0; j--)
+    {
+        result[i] = vec[j];
+        i++;
+    }
+
+    return result;
+}
+
 int quick_search_aho(const char *cstr, const char *sub_cstr)
 {
     Trie t;
